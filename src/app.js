@@ -14,14 +14,25 @@ const books = [
         título: "Odisseia"
     }
 ]
+function searchBook(id){
+    return books.findIndex(book => {
+        return book.id === Number(id)
+    })
+}
 
 //calling the routes
+//get routes
 app.get('/', (req,res) => {
     res.status(200).send('Node.js and Express curse')
 })
 app.get('/books', (req,res) => {
     res.status(200).json(books)
 })
+app.get('/books/:id', (req,res) =>{
+    const index = searchBook(req.params.id)
+    res.status(200).json(books[index])
+})
+//post routes
 app.post('/books', (req,res) => {
     books.push(req.body)
     res.status(201).send("The book has been registered successfully.")
