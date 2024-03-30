@@ -22,20 +22,32 @@ function searchBook(id){
 
 //calling the routes
 //get routes
-app.get('/', (req,res) => {
+app.get('/', (req,res)=>{
     res.status(200).send('Node.js and Express curse')
 })
-app.get('/books', (req,res) => {
+app.get('/books',(req,res)=>{
     res.status(200).json(books)
 })
-app.get('/books/:id', (req,res) =>{
+app.get('/books/:id',(req,res)=>{
     const index = searchBook(req.params.id)
     res.status(200).json(books[index])
 })
 //post routes
-app.post('/books', (req,res) => {
+app.post('/books',(req,res)=>{
     books.push(req.body)
     res.status(201).send("The book has been registered successfully.")
+})
+//put routes
+app.put('/books/:id',(req,res)=>{
+    const index = searchBook(req.params.id)
+    books[index].título = req.body.título
+    res.status(200).json(books)
+})
+//delete routes
+app.delete('/books/:id',(req,res)=>{
+    const index = searchBook(req.params.id)
+    books.splice(index,1)
+    res.status(200).send('The book has been removed!')
 })
 
 export default app
