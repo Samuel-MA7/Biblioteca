@@ -1,19 +1,21 @@
 import express from 'express'
+import dotenv from 'dotenv'
+import connectOnDB from './config/db_connect.js'
+
+dotenv.config()
+
+const connection = await connectOnDB();
+connection.on('error',(error)=>{
+    console.error('Connection error',error)
+})
+connection.once('open',()=>{
+    console.log('Connention has been succeded.')
+})
 
 //executing express
 const app = express()
 app.use(express.json())//middleware
 
-const books = [
-    {
-        id: 1,
-        título: "Ilíada"
-    },
-    {
-        id: 2,
-        título: "Odisseia"
-    }
-]
 function searchBook(id){
     return books.findIndex(book => {
         return book.id === Number(id)
@@ -22,7 +24,7 @@ function searchBook(id){
 
 //calling the routes
 //get routes
-app.get('/', (req,res)=>{
+app.get('/',(req,res)=>{
     res.status(200).send('Node.js and Express curse')
 })
 app.get('/books',(req,res)=>{
