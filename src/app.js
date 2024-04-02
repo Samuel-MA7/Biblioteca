@@ -21,11 +21,4 @@ const app = express()
 //calling the routes
 routes(app)
 
-//delete routes
-app.delete('/books/:id',(req,res)=>{
-    const index = searchBook(req.params.id)
-    books.splice(index,1)
-    res.status(200).send('The book has been removed!')
-})
-
 export default app
