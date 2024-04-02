@@ -1,7 +1,9 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import connectOnDB from './config/db_connect.js'
+import book from './models/Books.js'
 
+//calling dotenv
 dotenv.config()
 
 const connection = await connectOnDB();
@@ -16,19 +18,14 @@ connection.once('open',()=>{
 const app = express()
 app.use(express.json())//middleware
 
-function searchBook(id){
-    return books.findIndex(book => {
-        return book.id === Number(id)
-    })
-}
-
 //calling the routes
 //get routes
 app.get('/',(req,res)=>{
     res.status(200).send('Node.js and Express curse')
 })
-app.get('/books',(req,res)=>{
-    res.status(200).json(books)
+app.get('/books',async(req,res)=>{
+    const booksList = await book.find()
+    res.status(200).json(booksList)
 })
 app.get('/books/:id',(req,res)=>{
     const index = searchBook(req.params.id)
