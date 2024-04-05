@@ -21,6 +21,15 @@ class BookController {
             res.status(500).json({ message:`${error.message} - the raquisition failed!` })
         }
     }
+    static async listBooksByPublisher(req,res){
+        const publisher = req.query.editora
+        try{                                           //model property and param
+            const booksByPublisher = await book.find({ editora:publisher })
+            res.status(200).json(booksByPublisher)
+        }catch(error){
+            res.status(500).json({ message:`${error.message} - the raquisition failed!` })
+        }
+    }
     //post routes
     static async registerBook(req,res){
         const newBook = req.body
