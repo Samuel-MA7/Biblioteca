@@ -7,7 +7,7 @@ import routes from './routes/index.js'
 dotenv.config()
 
 //connection with mongodb
-const connection = await connectOnDB();
+const connection = await connectOnDB()
 connection.on('error',(error)=>{
     console.error('Connection error',error)
 })
