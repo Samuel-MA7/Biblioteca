@@ -4,34 +4,34 @@ import { author } from '../models/Authors.js'
 class BookController {
     //use the method without having to instantiating the class
     //get routes
-    static async listBooks(req,res){
+    static async listBooks(req,res,next){
         try{
             const booksList = await book.find()
             res.status(200).json(booksList)
         }catch(error){
-            res.status(500).json({ message:`${error.message} - the raquisition failed!` })
+            next(error)
         }
     }
-    static async findBookById(req,res){
+    static async findBookById(req,res,next){
         try{
             const id = req.params.id
             const bookById = await book.findById(id)
             res.status(200).json(bookById)
         }catch(error){
-            res.status(500).json({ message:`${error.message} - the raquisition failed!` })
+            next(error)
         }
     }
-    static async listBooksByPublisher(req,res){
+    static async listBooksByPublisher(req,res,next){
         const publisher = req.query.editora
         try{                                           //model property and param
             const booksByPublisher = await book.find({ editora:publisher })
             res.status(200).json(booksByPublisher)
         }catch(error){
-            res.status(500).json({ message:`${error.message} - the raquisition failed!` })
+            next(error)
         }
     }
     //post routes
-    static async registerBook(req,res){
+    static async registerBook(req,res,next){
         const newBook = req.body
         try{
             const foundAuthor = await author.findById(newBook.autor)
@@ -39,27 +39,27 @@ class BookController {
             const createdBook = await book.create(allBook)
             res.status(201).json({ message:"Registered successfully!",book:createdBook })
         }catch(error){
-            res.status(500).json({ message:`${error.message} - the register failed!` })
+            next(error)
         }
     }
     //put routes
-    static async updateBookById(req,res){
+    static async updateBookById(req,res,next){
         try{
             const id = req.params.id
             await book.findByIdAndUpdate(id,req.body)
             res.status(200).json({ message:"The book has been updated." })
         }catch(error){
-            res.status(500).json({ message:`${error.message} - the raquisition failed!` })
+            next(error)
         }
     }
     //delete routes
-    static async deleteBookById(req,res){
+    static async deleteBookById(req,res,next){
         try{
             const id = req.params.id
             await book.findByIdAndDelete(id)
             res.status(200).json({ message:"The book has been deleted." })
         }catch(error){
-            res.status(500).json({ message:`${error.message} - the raquisition failed!` })
+            next(error)
         }
     }
 }
