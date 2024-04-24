@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import connectOnDB from './config/db_connect.js'
 import routes from './routes/index.js'
 import errorMiddleware from './middlewares/errorMiddleware.js'
+import error404Middleware from './middlewares/error404Middleware.js'
 
 //calling dotenv
 dotenv.config()
@@ -21,6 +22,9 @@ const app = express()
 
 //calling the routes
 routes(app)
+
+//error404 middleware
+app.use(error404Middleware)
 
 //error middleware
 app.use(errorMiddleware)

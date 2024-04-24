@@ -1,5 +1,6 @@
 import book from '../models/Books.js'
 import { author } from '../models/Authors.js'
+import NotFound from '../errors/NotFound.js'
 
 class BookController {
     //use the method without having to instantiating the class
@@ -16,7 +17,11 @@ class BookController {
         try{
             const id = req.params.id
             const bookById = await book.findById(id)
-            res.status(200).json(bookById)
+            if(bookById !== null){
+                res.status(200).json(bookById)
+            }else{
+                next(new NotFound("The book's id was not found!"))
+            }
         }catch(error){
             next(error)
         }
@@ -46,8 +51,12 @@ class BookController {
     static async updateBookById(req,res,next){
         try{
             const id = req.params.id
-            await book.findByIdAndUpdate(id,req.body)
-            res.status(200).json({ message:"The book has been updated." })
+            const bookResult = await book.findByIdAndUpdate(id,req.body)
+            if(bookResult !== null){
+                res.status(200).json({ message:"The book has been updated." })
+            }else{
+                next(new NotFound("The book's id was not found!"))
+            }
         }catch(error){
             next(error)
         }
@@ -56,8 +65,12 @@ class BookController {
     static async deleteBookById(req,res,next){
         try{
             const id = req.params.id
-            await book.findByIdAndDelete(id)
-            res.status(200).json({ message:"The book has been deleted." })
+            const bookResult = await book.findByIdAndDelete(id)
+            if(bookResult !== null){
+                res.status(200).json({ message:"The book has been deleted." })
+            }else{
+                next(new NotFound("The book's id was not found!"))
+            }
         }catch(error){
             next(error)
         }
