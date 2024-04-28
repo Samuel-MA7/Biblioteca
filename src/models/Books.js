@@ -12,15 +12,19 @@ const bookSchema = new mongoose.Schema({
         type:String,
         required: [true,"Book's publisher is required!"],
         enum:{
-            values:["Helênica"],
+            values:["Helênica","Lusitana"],
             message:"The {VALUE} publisher is not an allowed value!" 
         }
     },
     preço: { type:Number },
     páginas: { 
         type:Number,
-        min:[1,"The number of pages must be between 1 and 3000!"],
-        max:[3000,"The number of pages must be between 1 and 3000!"] 
+        validate:{
+            validator: (value)=>{
+                return value >= 1 && value <= 3000
+            },
+            message:"Book's number of pages must be between 1 and 3000!"
+        } 
     },
     autor: authorSchema
 }, { versionKey:false })

@@ -1,5 +1,5 @@
-import book from '../models/Books.js'
-import { author } from '../models/Authors.js'
+import { book } from '../models/index.js'
+import { author } from '../models/index.js'
 import NotFound from '../errors/NotFound.js'
 
 class BookController {
@@ -26,10 +26,13 @@ class BookController {
             next(error)
         }
     }
-    static async listBooksByPublisher(req,res,next){
-        const publisher = req.query.editora
-        try{                                           //model property and param
-            const booksByPublisher = await book.find({ editora:publisher })
+    static async listBooksByFilter(req,res,next){
+        try{
+            const { editora,título } = req.query
+            const search = {}
+            if(título) search.título = título
+            if(editora) search.editora = editora
+            const booksByPublisher = await book.find(search)
             res.status(200).json(booksByPublisher)
         }catch(error){
             next(error)

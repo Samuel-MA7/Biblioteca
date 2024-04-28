@@ -1,5 +1,5 @@
 import NotFound from '../errors/NotFound.js'
-import { author } from '../models/Authors.js'
+import { author } from '../models/index.js'
 
 class AuthorController {
     //use the method without having to instantiating the class
